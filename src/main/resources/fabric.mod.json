@@ -20,6 +20,9 @@
   "entrypoints": {
     "main": [
       "funskydev.glovesmod.Main"
+    ],
+    "fabric-datagen": [
+      "funskydev.glovesmod.datagen.GlovesDatagen"
     ]
   },
   "mixins": [
