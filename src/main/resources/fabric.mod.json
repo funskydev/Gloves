@@ -21,11 +21,15 @@
     "main": [
       "funskydev.glovesmod.Main"
     ],
+    "client": [
+      "funskydev.glovesmod.client.ClientMain"
+    ],
     "fabric-datagen": [
       "funskydev.glovesmod.datagen.GlovesDatagen"
     ]
   },
   "mixins": [
+    "glovesmod.mixins.json"
   ],
 
   "depends": {
