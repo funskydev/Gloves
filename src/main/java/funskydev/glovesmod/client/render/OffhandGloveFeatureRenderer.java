@@ -29,8 +29,8 @@ public class OffhandGloveFeatureRenderer<T extends PlayerEntity, M extends Playe
             AbstractClientPlayerEntity player = (AbstractClientPlayerEntity) entity;
 
             boolean slim = isSlim(player);
-            ModelPart gloveModel = slim ? slimGlove : glove;
-            Identifier gloveTexture = slim ? gloveType.get().getTextures().getRight() : gloveType.get().getTextures().getRight();
+            ModelPart gloveModel = getGloveModel(slim);
+            Identifier gloveTexture = slim ? gloveType.get().getTextures().getRight() : gloveType.get().getTextures().getLeft();
 
             renderGlove(matrixStack, vertexConsumers, light, player, (PlayerEntityModel)this.getContextModel(), player.getMainArm().equals(Arm.RIGHT) ? Arm.LEFT : Arm.RIGHT, gloveModel, gloveTexture);
         }

@@ -30,8 +30,8 @@ import java.util.function.Predicate;
 
 public class GloveFeatureRenderer<T extends PlayerEntity, M extends PlayerEntityModel<T>> extends FeatureRenderer<T, M> {
 
-    protected final ModelPart glove;
-    protected final ModelPart slimGlove;
+    protected static ModelPart glove = null;
+    protected static ModelPart slimGlove;
 
     public GloveFeatureRenderer(FeatureRendererContext<T, M> featureRendererContext, EntityModelLoader loader) {
         super(featureRendererContext);
@@ -45,7 +45,7 @@ public class GloveFeatureRenderer<T extends PlayerEntity, M extends PlayerEntity
         ModelPartData modelPartData = modelData.getRoot();
         Dilation dilation = new Dilation(0.3F);
         modelPartData.addChild("glove", ModelPartBuilder.create().uv(0, 0).cuboid(-2.0F, -3.0F, -2.0F, 4.0F, 3.0F, 4.0F, dilation), ModelTransform.pivot(0.0F, 24.0F, 0.0F));
-        modelPartData.addChild("slim_glove", ModelPartBuilder.create().uv(0, 0).cuboid(-1.0F, -3.0F, -2.0F, 3.0F, 3.0F, 4.0F, dilation), ModelTransform.pivot(0.0F, 24.0F, 0.0F));
+        modelPartData.addChild("slim_glove", ModelPartBuilder.create().uv(0, 0).cuboid(-2.0F, -3.0F, -2.0F, 3.0F, 3.0F, 4.0F, dilation), ModelTransform.pivot(0.0F, 24.0F, 0.0F));
         return TexturedModelData.of(modelData, 16, 16);
     }
 
@@ -58,16 +58,20 @@ public class GloveFeatureRenderer<T extends PlayerEntity, M extends PlayerEntity
             AbstractClientPlayerEntity player = (AbstractClientPlayerEntity) entity;
 
             boolean slim = isSlim(player);
-            ModelPart gloveModel = slim ? slimGlove : glove;
-            Identifier gloveTexture = slim ? gloveType.get().getTextures().getRight() : gloveType.get().getTextures().getRight();
+            ModelPart gloveModel = getGloveModel(slim);
+            Identifier gloveTexture = slim ? gloveType.get().getTextures().getRight() : gloveType.get().getTextures().getLeft();
 
             renderGlove(matrixStack, vertexConsumers, light, player, (PlayerEntityModel)this.getContextModel(), player.getMainArm().equals(Arm.RIGHT) ? Arm.RIGHT : Arm.LEFT, gloveModel, gloveTexture);
         }
 
     }
 
-    protected static boolean isSlim(AbstractClientPlayerEntity player) {
+    public static boolean isSlim(AbstractClientPlayerEntity player) {
         return player.getModel().equals("slim");
+    }
+
+    public static ModelPart getGloveModel(boolean slim) {
+        return slim ? slimGlove : glove;
     }
 
     protected static Predicate<ItemStack> getGlovePredicate() {
@@ -76,7 +80,7 @@ public class GloveFeatureRenderer<T extends PlayerEntity, M extends PlayerEntity
 
     }
 
-    protected static Optional<GloveType> getGloveType(PlayerEntity entity, boolean mainHand) {
+    public static Optional<GloveType> getGloveType(PlayerEntity entity, boolean mainHand) {
 
         if(entity instanceof AbstractClientPlayerEntity player) {
 
@@ -111,8 +115,7 @@ public class GloveFeatureRenderer<T extends PlayerEntity, M extends PlayerEntity
             matrixStack.push();
 
             targetModelPart.rotate(matrixStack);
-            matrixStack.translate(-0.0625D, -0.875D, 0D);
-            matrixStack.scale(-1f, 1f, 1f);
+            matrixStack.translate(isSlim(player) ? 0 : 0.0625D, -0.875D, 0D);
 
             VertexConsumer vertexConsumer = ItemRenderer.getArmorGlintConsumer(vertexConsumers, RenderLayer.getArmorCutoutNoCull(gloveTexture), false, false);
             gloveModel.render(matrixStack, vertexConsumer, light, OverlayTexture.DEFAULT_UV);
@@ -126,7 +129,8 @@ public class GloveFeatureRenderer<T extends PlayerEntity, M extends PlayerEntity
             matrixStack.push();
 
             targetModelPart.rotate(matrixStack);
-            matrixStack.translate(0.0625D, -0.875D, 0D);
+            matrixStack.translate(isSlim(player) ? 0 : 0.0625D, -0.875D, 0D);
+            matrixStack.scale(-1f, 1f, 1f);
 
             VertexConsumer vertexConsumer = vertexConsumers.getBuffer(RenderLayer.getEntityCutoutNoCull(gloveTexture));
             gloveModel.render(matrixStack, vertexConsumer, light, OverlayTexture.DEFAULT_UV);
