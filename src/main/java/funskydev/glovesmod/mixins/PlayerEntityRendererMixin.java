@@ -1,8 +1,8 @@
 package funskydev.glovesmod.mixins;
 
-import funskydev.glovesmod.Main;
 import funskydev.glovesmod.client.render.GloveFeatureRenderer;
 import funskydev.glovesmod.util.GloveType;
+import funskydev.glovesmod.util.GloveUtils;
 import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.render.OverlayTexture;
@@ -10,7 +10,6 @@ import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.PlayerEntityRenderer;
-import net.minecraft.client.render.entity.model.PlayerEntityModel;
 import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Arm;
@@ -30,8 +29,8 @@ public abstract class PlayerEntityRendererMixin {
 
         Optional<GloveType> gloveType;
 
-        if(player.getMainArm().equals(Arm.RIGHT)) gloveType = GloveFeatureRenderer.getGloveType(player, true);
-        else gloveType = GloveFeatureRenderer.getGloveType(player, false);
+        if(player.getMainArm().equals(Arm.RIGHT)) gloveType = GloveUtils.getGloveType(player, true);
+        else gloveType = GloveUtils.getGloveType(player, false);
 
         if(gloveType.isPresent()) {
 
@@ -62,8 +61,8 @@ public abstract class PlayerEntityRendererMixin {
 
         Optional<GloveType> gloveType;
 
-        if(player.getMainArm().equals(Arm.LEFT)) gloveType = GloveFeatureRenderer.getGloveType(player, true);
-        else gloveType = GloveFeatureRenderer.getGloveType(player, false);
+        if(player.getMainArm().equals(Arm.LEFT)) gloveType = GloveUtils.getGloveType(player, true);
+        else gloveType = GloveUtils.getGloveType(player, false);
 
         if(gloveType.isPresent()) {
 

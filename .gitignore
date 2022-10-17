@@ -32,3 +32,6 @@ bin/
 # fabric
 
 run/
+
+# datagen
+src/main/generated/.cache/

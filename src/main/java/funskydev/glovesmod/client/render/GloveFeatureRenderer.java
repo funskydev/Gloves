@@ -6,6 +6,7 @@ import dev.emi.trinkets.api.TrinketsApi;
 import funskydev.glovesmod.client.ClientMain;
 import funskydev.glovesmod.items.Glove;
 import funskydev.glovesmod.util.GloveType;
+import funskydev.glovesmod.util.GloveUtils;
 import net.minecraft.client.model.*;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.render.OverlayTexture;
@@ -52,7 +53,7 @@ public class GloveFeatureRenderer<T extends PlayerEntity, M extends PlayerEntity
     @Override
     public void render(MatrixStack matrixStack, VertexConsumerProvider vertexConsumers, int light, T entity, float limbAngle, float limbDistance, float tickDelta, float animationProgress, float headYaw, float headPitch) {
 
-        Optional<GloveType> gloveType = getGloveType(entity, true);
+        Optional<GloveType> gloveType = GloveUtils.getGloveType(entity, true);
 
         if(gloveType.isPresent()) {
             AbstractClientPlayerEntity player = (AbstractClientPlayerEntity) entity;
@@ -74,38 +75,6 @@ public class GloveFeatureRenderer<T extends PlayerEntity, M extends PlayerEntity
         return slim ? slimGlove : glove;
     }
 
-    protected static Predicate<ItemStack> getGlovePredicate() {
-
-        return stack -> stack.getItem() instanceof Glove;
-
-    }
-
-    public static Optional<GloveType> getGloveType(PlayerEntity entity, boolean mainHand) {
-
-        if(entity instanceof AbstractClientPlayerEntity player) {
-
-            Optional<TrinketComponent> trinketComponent = TrinketsApi.getTrinketComponent(player);
-            if(!trinketComponent.isPresent()) return Optional.empty();
-
-            List<Pair<SlotReference, ItemStack>> glovesList = trinketComponent.get().getEquipped(getGlovePredicate());
-            if(glovesList.isEmpty()) return Optional.empty();
-
-            String hand = mainHand ? "hand" : "offhand";
-
-            for(Pair<SlotReference, ItemStack> glove : glovesList) {
-
-                if(glove.getLeft().inventory().getSlotType().getGroup().equals(hand)) {
-                    if(glove.getRight().getItem() instanceof Glove gloveItem) return Optional.of(gloveItem.getGloveType());
-                }
-
-            }
-
-        }
-
-        return Optional.empty();
-
-    }
-
     protected static void renderGlove(MatrixStack matrixStack, VertexConsumerProvider vertexConsumers, int light, AbstractClientPlayerEntity player, PlayerEntityModel playerModel, Arm arm, ModelPart gloveModel, Identifier gloveTexture) {
 
         if(arm.equals(Arm.RIGHT)) {
@@ -115,7 +84,7 @@ public class GloveFeatureRenderer<T extends PlayerEntity, M extends PlayerEntity
             matrixStack.push();
 
             targetModelPart.rotate(matrixStack);
-            matrixStack.translate(isSlim(player) ? 0 : 0.0625D, -0.875D, 0D);
+            matrixStack.translate(isSlim(player) ? 0 : -0.0625D, -0.875D, 0D);
 
             VertexConsumer vertexConsumer = ItemRenderer.getArmorGlintConsumer(vertexConsumers, RenderLayer.getArmorCutoutNoCull(gloveTexture), false, false);
             gloveModel.render(matrixStack, vertexConsumer, light, OverlayTexture.DEFAULT_UV);

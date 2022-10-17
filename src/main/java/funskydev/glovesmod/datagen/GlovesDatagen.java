@@ -10,6 +10,7 @@ public class GlovesDatagen implements DataGeneratorEntrypoint {
 
         fabricDataGenerator.addProvider(GlovesLangGen::new);
         fabricDataGenerator.addProvider(GlovesModelGen::new);
+        fabricDataGenerator.addProvider(GlovesRecipeGen::new);
 
     }
 

@@ -1,6 +1,7 @@
 package funskydev.glovesmod.client.render;
 
 import funskydev.glovesmod.util.GloveType;
+import funskydev.glovesmod.util.GloveUtils;
 import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -23,7 +24,7 @@ public class OffhandGloveFeatureRenderer<T extends PlayerEntity, M extends Playe
     @Override
     public void render(MatrixStack matrixStack, VertexConsumerProvider vertexConsumers, int light, T entity, float limbAngle, float limbDistance, float tickDelta, float animationProgress, float headYaw, float headPitch) {
 
-        Optional<GloveType> gloveType = getGloveType(entity, false);
+        Optional<GloveType> gloveType = GloveUtils.getGloveType(entity, false);
 
         if(gloveType.isPresent()) {
             AbstractClientPlayerEntity player = (AbstractClientPlayerEntity) entity;

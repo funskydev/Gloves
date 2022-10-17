@@ -3,7 +3,10 @@
   "minVersion": "0.8",
   "package": "funskydev.glovesmod.mixins",
   "compatibilityLevel": "JAVA_17",
-  "mixins": [],
+  "mixins": [
+    "PlayerEntityMixin",
+    "BlockMixin"
+  ],
   "client": [
     "PlayerEntityRendererMixin"
   ],

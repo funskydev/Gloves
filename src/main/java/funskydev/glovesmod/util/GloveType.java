@@ -9,12 +9,13 @@ import net.minecraft.util.Pair;
 
 public enum GloveType {
 
-    LEATHER(ArmorMaterials.LEATHER, "leather");
+    LEATHER(ArmorMaterials.LEATHER, "leather", 1.5f);
 
     private ArmorMaterial material;
     private Pair<Identifier, Identifier> textures;
+    private float miningSpeedMultiplier;
 
-    GloveType(ArmorMaterial material, String name) {
+    GloveType(ArmorMaterial material, String name, float miningSpeedMultiplier) {
 
         this.material = material;
 
@@ -22,6 +23,8 @@ public enum GloveType {
         String slimPath = path + "_slim.png";
         path += ".png";
         this.textures = new Pair<>(new Identifier(Main.MODID, path), new Identifier(Main.MODID, slimPath));
+
+        this.miningSpeedMultiplier = miningSpeedMultiplier;
 
     }
 
@@ -34,6 +37,12 @@ public enum GloveType {
     public Pair<Identifier, Identifier> getTextures() {
 
         return this.textures;
+
+    }
+
+    public float getMiningSpeedMultiplier() {
+
+        return this.miningSpeedMultiplier;
 
     }
 

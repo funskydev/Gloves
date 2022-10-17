@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "L": {
+      "item": "minecraft:leather"
+    },
+    "S": {
+      "item": "minecraft:string"
+    }
+  },
+  "pattern": [
+    "LLL",
+    "LLL",
+    "LSL"
+  ],
+  "result": {
+    "item": "glovesmod:leather_glove"
+  }
+}
