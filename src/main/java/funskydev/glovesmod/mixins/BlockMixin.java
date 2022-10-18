@@ -30,7 +30,6 @@ public class BlockMixin {
             gloveStack.get().damage(1, player, (p) -> {
                 //TODO play sound bundle
             });
-            Main.LOGGER.info(String.valueOf("coul"));
         }
 
     }

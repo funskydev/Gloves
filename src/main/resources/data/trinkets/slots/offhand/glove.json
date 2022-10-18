@@ -1,0 +1,4 @@
+{
+    "replace": true,
+    "quick_move_predicates": ["glovesmod:check_mainhand"]
+}
